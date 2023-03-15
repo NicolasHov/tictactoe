@@ -34,8 +34,7 @@ update_board = (board, coords, player) => {
     return board
 }
 
-
-function getInput() {
+getInput = () => {
     let prompt = require('prompt-sync')({
         sigint: true // you can kill the wait with ctrl-C
     });
@@ -48,8 +47,23 @@ function getInput() {
 }
 
 checkboard = (board) => {
-    // TODO: check if win on horizontal or vertical or diagonal
-    return true
+    // check if win on horizontal 
+    const arr1d = [].concat(...board).join(''); // convert to a 1dimension array then to a string
+    // console.log(arr1d.join(''));
+    let result_horizontal = arr1d.includes('ooo') || arr1d.includes('xxx') ? true : false;
+
+    // check if win on vertical
+    const board_transposed = board[0].map((_, colIndex) => board.map(row => row[colIndex]));
+    const arr1d_vertical = [].concat(...board_transposed).join(''); // convert to a 1dimension array then to a string
+    // console.log(arr1d_vertical.join(''));
+    let result_vertical = arr1d_vertical.includes('ooo') || arr1d_vertical.includes('xxx')? true : false;
+
+    // TODO: check if win on diagonal
+    const result_diagonal = false
+
+    // if there's one win, it returns true
+    if ((result_horizontal * 1 + result_vertical * 1 + result_diagonal * 1) > 0) { return true }
+    // return result
 }
 
 
@@ -57,7 +71,7 @@ checkboard = (board) => {
 
 // Initialize game
 const SIZE = 3
-let isPlaying = true
+let isOver = false
 let newBoard = create_board(SIZE)
 
 // First print of the board :
@@ -68,12 +82,14 @@ let player = "x"
 gameLoop = () => {
     let coords = getInput() // //Ask for the column and row of the next move
     display_board(update_board(newBoard, coords, player))
+    isOver = checkboard(newBoard)
     player == "x" ? player = "o" : player = "x"
-    isPlaying = checkboard(newBoard)
 }
 
 // Game loop 
-while (isPlaying) { // check if we have reached a winning or end condition. If so, stop the game.
+while (!isOver) { // check if we have reached a winning or end condition. If so, stop the game.
     gameLoop()
 }
 console.log("end");
+player == "x" ? player = "o" : player = "x"
+console.log("Winner: ", player);
