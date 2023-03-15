@@ -4,10 +4,6 @@ create_board = (size) => {
     for (let i = 0; i < board.length; i++) {
         board[i] = new Array(size);
     }
-    return board
-}
-
-set_empty_board = (board) => {
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             board[i][j] = " "
@@ -51,8 +47,9 @@ function getInput() {
     return { column, row };
 }
 
-checkIfWin = (board) => {
+checkboard = (board) => {
     // TODO: check if win on horizontal or vertical or diagonal
+    return true
 }
 
 
@@ -61,19 +58,18 @@ checkIfWin = (board) => {
 // Initialize game
 const SIZE = 3
 let isPlaying = true
-let newBoard = set_empty_board(create_board(SIZE))
+let newBoard = create_board(SIZE)
 
 // First print of the board :
 display_board(newBoard)
 
 let player = "x"
 
-function gameLoop() {
-    //Ask for the column in which to put the piece
-    let coords = getInput()
+gameLoop = () => {
+    let coords = getInput() // //Ask for the column and row of the next move
     display_board(update_board(newBoard, coords, player))
-    player == "x" ? "o" : "x"
-    isGameOver = checkIfWin(newBoard)
+    player == "x" ? player = "o" : player = "x"
+    isPlaying = checkboard(newBoard)
 }
 
 // Game loop 
